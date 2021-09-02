@@ -1,6 +1,8 @@
 \documentclass{article}
 \usepackage{natbib}
 
+\newcommand{\Jemmacomment}[1]{\emph{\bfseries Jemma says: #1}}
+
 \title{Advanced Parallel in Time Algorithms for Partial Differential Equations: Testcases}
 \author{J. Shipton}
 
@@ -10,20 +12,53 @@
 
 This document collates and describes the test cases for the Weather
 and Climate Prediction and Fusion Modelling use cases for the APinTA
-PDEs Excalibur project.
+PDEs Excalibur project. We present the information required to
+reproduce the tests and model performance metrics. Where possible, we
+will reference published material and not repeat the details here, but
+will add any further information as required.
 
 \section*{Weather and Climate Prediction}
 
 The tests described in the following subsections comprise test suite 1
 and will update those published in
 \citet{williamson1992standard}. This suite consists of linear and
-nonlinear shallow water tests on the plane and sphere.
-
-\subsection{Gaussian initial condition}
+nonlinear shallow water tests on the plane and sphere. Linear tests
+are useful for benchmarking the exponential integrators we are
+developing since these require splitting the equations into linear and
+nonlinear parts.
 
 \subsection{Geostrophic balance}
+The ability of a model to maintain geostrophic balance is of key
+importance for weather and climate prediction. The solid body rotation
+test (number 2 in \citet{williamson1992standard}) is initialised in
+geostrophic balance and is commonly used to demonstrate this
+property. A linearised version is described in
+\citet{weller2012computational}.
+
+\subsection{Gaussian initial condition}
+Initial conditions comprised of Gaussian bumps added to a flow at rest
+provide a way to analyse numerical dispersion errors. They have been
+used for the linear shallow water equations on the f-plane and
+f-sphere \citep{schreiber2018beyond, schreiber2019parallel}.
 
 \subsection{Rossby waves}
+The Rossby wave test case specified in \citet{williamson1992standard}
+has been the subject of much discussion since the initial conditions
+are not a solution of the shallow water equations and the wave becomes
+unstable at long times. \Jemmacomment{add Paldor papers here}.
+
+\subsection{Barotropic instability}
+The unstable barotropic jet described in \citet{galewsky2004initial}
+is a commonly used testcase for the nonlinear shallow water
+equations. The instability causes the jet to roll up into vortices the
+pattern of which has been reproduced by many models, although there is
+no analytical solution to compare to. The complex flow presents a
+challenge to numerical models and mimics the multiscale, nonlinear
+behaviour found in the real atmosphere. The test has been used to
+investigate the best way to treat the Coriolis term, with
+\citet{schreiber2019exponential} finding that they achieve the best
+wallclock-time to error when the incorporate the Coriolis term into
+the nonlinear operator in their REXI computation.
 
 \section*{Fusion Modelling}
 

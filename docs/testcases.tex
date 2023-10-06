@@ -19,37 +19,41 @@ reproduce the tests and model performance metrics. Where possible, we
 will reference published material and not repeat the details here, but
 will add any further information as required.
 
-\section*{Weather and Climate Prediction}
+\section{Weather and Climate Prediction}
 
-The tests described in the following subsections comprise test suite 1
-and will update those published in
-\citet{williamson1992standard}. This suite consists of linear and
-nonlinear shallow water tests on the plane and sphere. Linear tests
-are useful for benchmarking the exponential integrators we are
-developing since these require splitting the equations into linear and
-nonlinear parts.
+The tests described in the following subsections comprise test suites 1-4.
 
-\subsection{Geostrophic balance}
+\subsection{Suite 1: shallow water testcases}
+This suite consists of linear and nonlinear shallow water tests on the
+plane and sphere. Linear tests are useful for benchmarking the
+exponential integrators we are developing since these require
+splitting the equations into linear and nonlinear parts.
+
+\subsubsection{1.1: Geostrophic balance, linear equations}
 The ability of a model to maintain geostrophic balance is of key
 importance for weather and climate prediction. The solid body rotation
 test (number 2 in \citet{williamson1992standard}) is initialised in
 geostrophic balance and is commonly used to demonstrate this
 property. A linearised version is described in
-\citet{weller2012computational}.
+\citet{weller2012computational}, section 4b. Solutions are initialised
+in a solid body rotation solution and solved for 5 days, and the $L_2$
+norm of the solutions are compared relative to the initial condition.
 
-\subsection{Gaussian initial condition}
+\subsubsection{1.2: Gaussian initial condition, linear equations}
 Initial conditions comprised of Gaussian bumps added to a flow at rest
 provide a way to analyse numerical dispersion errors. They have been
 used for the linear shallow water equations on the f-plane and
 f-sphere \citep{schreiber2018beyond, schreiber2019parallel}.
 
-\subsection{Rossby waves}
-The Rossby wave test case specified in \citet{williamson1992standard}
-has been the subject of much discussion since the initial conditions
-are not a solution of the shallow water equations and the wave becomes
-unstable at long times. \Jemmacomment{add Paldor papers here}.
+\subsubsection{1.3: Flow over a mountain, nonlinear equations}
+The flow over a mountain test case specified in
+\citet{williamson1992standard} has been the subject of much discussion
+since the initial conditions are not a solution of the shallow water
+equations and the wave becomes unstable at long times. Solutions are
+evaluated relative to reference solution after 15 days and inspected
+for stability at 50 days.
 
-\subsection{Barotropic instability}
+\subsubsection{1.4: barotropic instability, nonlinear equations}
 The unstable barotropic jet described in \citet{galewsky2004initial}
 is a commonly used testcase for the nonlinear shallow water
 equations. The instability causes the jet to roll up into vortices the
@@ -60,15 +64,63 @@ behaviour found in the real atmosphere. The test has been used to
 investigate the best way to treat the Coriolis term, with
 \citet{schreiber2019exponential} finding that they achieve the best
 wallclock-time to error when the incorporate the Coriolis term into
-the nonlinear operator in their REXI computation.
+the nonlinear operator in their REXI computation. Solution quality
+is inspected compared to reference solutions.
 
-\section*{Fusion Modelling}
+\subsection{Suite 2: vertical slice testcases}
+This suite concerns vertical slice testcases for the nonhydrostatic
+compressible Euler equations. The testcases are a subset of those
+described in \citet{cotter2022compatible}.  They are all for
+comparison to published reference solutions, with an eye towards
+numerical stability and solution quality, as well as convergence
+rate of iterative PinT algorithms.
 
-This test suite is based on model problems currently being investigated or
-related to the UKAEA-led NEPTUNE project (\emph{NEutrals \& Plasma TUrbulence
-  Numerics for the Exascale}), which aims to create exascale-level software
-capable of modelling the plasma edge of a thermonuclear tokamak plasma. The two
-test cases below relate to
+Briefly, the test problems
+are:
+\begin{itemize}
+\item 2.1: Gravity waves (section 3.1 of the reference),
+\item 2.2: Flow over Mount Agnesi (section 3.3 of the reference),
+\item 2.3: Flow over Mount Sch\"ar (section 3.4 of the reference).
+\end{itemize}
+
+\subsection{Suite 3: 3D testcases}
+This suite concerns 3D solutions of the nonhydrostatic (in our case)
+compressible Euler equations, using a subset of the test cases proposed
+in \citet{ullrich2012dynamical}, namely:
+\begin{itemize}
+\item 3.1: Mountain wave on a small planet (test case 2-1 of the reference)
+\item 3.2: Gravity wave on a small planet (test case 3-1 of the reference)
+\item 3.3: Dry baroclinic wave on a reduced planet (test case 4-1-2 of
+  the reference)
+\end{itemize}
+In all cases the solutions are compared to reference solutions with an
+eye towards numerical stability and solution quality, as well as
+convergence rate of iterative PinT algorithms.
+
+\subsection{Suite 4: Challenging testcases}
+This suite comprises testcases selected to understand how PinT
+algorithms respond to two specific challenges highlighted in the
+ExCALIBUR call, namely 1) models with non-differentiable switches in
+(i.e. ``physics''), and 2) models with diffusive components.
+\begin{itemize}
+\item Challenge 1 is addressed by testcase 4.1, which is the moist rotating
+shallow water ``tropical cyclone'' testcase of \citet{ferguson2019assessing}.
+\item Challenge 2 is addressed by testcase 4.2, which is the vertical slice
+falling bubble testcase in Section 3.2 of \citet{cotter2022compatible}.
+\end{itemize}
+
+In all cases the solutions are compared to reference solutions with an
+eye towards numerical stability and solution quality, as well as
+convergence rate of iterative PinT algorithms.
+
+\section{Fusion Modelling}
+
+This test suite is based on model problems currently being
+investigated or related to the UKAEA-led NEPTUNE project
+(\emph{NEutrals \& Plasma TUrbulence Numerics for the Exascale}),
+which aims to create exascale-level software capable of modelling the
+plasma edge of a thermonuclear tokamak plasma. The two test cases
+below relate to
 
 \subsection{Anisotropic heat equation}
 
